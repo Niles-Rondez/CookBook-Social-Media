@@ -9,6 +9,7 @@ module.exports = {
       flaxwhite: "#F5F5F5",
       grey: "#AFAFAF",
       bloodred: "#7B2B2B",
+      white: "#ffffff",
       //create color template here
     },
   },
