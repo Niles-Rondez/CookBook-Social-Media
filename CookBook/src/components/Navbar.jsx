@@ -5,8 +5,11 @@ function Navbar() {
   return (
     <nav className="bg-michelin h-screen min-w-[200px] w-1/4 max-w-[250px]">
       <div className="flex text-4xl text-center my-5 justify-center">
+        <Link to="/" className="flex"> 
         <h1 className="text-flaxwhite">Cook</h1>
         <h1 className="text-sunrise">Book</h1>
+        </Link>
+        
       </div>
 
       <ul className="flex flex-col text-flaxwhite text-2xl w-full items-center justify-center">
