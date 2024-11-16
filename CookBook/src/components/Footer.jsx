@@ -1,7 +1,7 @@
 // src/components/Footer.jsx
 function Footer() {
   return (
-    <footer className="bg-gray-800 text-white p-4 text-center mt-8">
+    <footer className="bg-flaxwhite text-white p-4 text-center">
       <p>&copy; 2024 CookBook. All rights reserved.</p>
     </footer>
   );
