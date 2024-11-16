@@ -3,22 +3,37 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="p-5 bg-michelin h-screen min-w-[200px] w-1/4 max-w-[250px]">
-      <ul className="flex flex-col text-white text-2xl">
-        <li className="mb-5">
-          <Link to="/">Home</Link>
+    <nav className="bg-michelin h-screen min-w-[200px] w-1/4 max-w-[250px]">
+      <div className="flex text-4xl text-center my-5 justify-center">
+        <h1 className="text-flaxwhite">Cook</h1>
+        <h1 className="text-sunrise">Book</h1>
+      </div>
+
+      <ul className="flex flex-col text-flaxwhite text-2xl w-full items-center justify-center">
+        <li className="w-full hover:bg-bloodred transition-all duration-200 ease-in-out">
+          <Link to="/" className="block w-full p-3 text-justify">
+            Home
+          </Link>
         </li>
-        <li className="mb-5">
-          <Link to="/mycookbook">My Cookbook</Link>
+        <li className="w-full hover:bg-bloodred transition-all duration-200 ease-in-out">
+          <Link to="/mycookbook" className="block w-full p-3 text-justify">
+            My Cookbook
+          </Link>
         </li>
-        <li className="mb-5">
-          <Link to="/discover">Discover</Link>
+        <li className="w-full hover:bg-bloodred transition-all duration-200 ease-in-out">
+          <Link to="/discover" className="block w-full p-3 text-justify">
+            Discover
+          </Link>
         </li>
-        <li className="mb-5">
-          <Link to="/groups">Groups</Link>
+        <li className="w-full hover:bg-bloodred transition-all duration-200 ease-in-out">
+          <Link to="/groups" className="block w-full p-3 text-justify">
+            Groups
+          </Link>
         </li>
-        <li className="mb-5">
-          <Link to="/newrecipe">New Recipe</Link>
+        <li className="w-full hover:bg-bloodred transition-all duration-200 ease-in-out">
+          <Link to="/newrecipe" className="block w-full p-3 text-justify">
+            New Recipe
+          </Link>
         </li>
       </ul>
     </nav>

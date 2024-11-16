@@ -8,6 +8,7 @@ module.exports = {
       sunrise: "#f28f3b",
       flaxwhite: "#F5F5F5",
       grey: "#AFAFAF",
+      bloodred: "#7B2B2B",
       //create color template here
     },
   },
