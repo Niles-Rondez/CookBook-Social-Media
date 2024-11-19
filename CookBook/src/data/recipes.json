@@ -1,0 +1,45 @@
+[
+    {
+      "id": 1,
+      "title": "Grilled Chicken Salad",
+      "author": "John Doe",
+      "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
+      "time": "10 mins ago",
+      "calories": "250 kcal",
+      "protein": "30g protein",
+      "carbs": "15g carbs",
+      "fat": "8g fat",
+      "tags": ["Healthy", "Salad"],
+      "description": "A healthy grilled chicken salad with fresh vegetables.",
+      "imgUrl": "https://cdn.britannica.com/98/235798-050-3C3BA15D/Hamburger-and-french-fries-paper-box.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Chocolate Chip Cookies",
+      "author": "Jane Smith",
+      "profilePic": "https://randomuser.me/api/portraits/women/2.jpg",
+      "time": "2 hours ago",
+      "calories": "400 kcal",
+      "protein": "5g protein",
+      "carbs": "50g carbs",
+      "fat": "20g fat",
+      "tags": ["Dessert", "Snack"],
+      "description": "Crispy on the outside, gooey on the inside.",
+      "imgUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbr65ByLp-8LiBgAsr0RKqSGngy318tpHqQg&s"
+    },
+    {
+      "id": 3,
+      "title": "Keto Avocado Toast",
+      "author": "Alice Brown",
+      "profilePic": "https://randomuser.me/api/portraits/women/3.jpg",
+      "time": "1 day ago",
+      "calories": "300 kcal",
+      "protein": "10g protein",
+      "carbs": "10g carbs",
+      "fat": "25g fat",
+      "tags": ["Keto", "Healthy"],
+      "description": "A quick and easy keto-friendly avocado toast recipe.",
+      "imgUrl": "https://via.placeholder.com/600x400"
+    }
+  ]
+  
