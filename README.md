@@ -88,13 +88,14 @@ To run the CookBook project locally, clone the repository and install the necess
 ```bash
 git clone https://github.com/your-username/cookbook-social-media.git
 cd cookbook-social-media
-npm install
 
 # For frontend
-cd frontend
+cd CookBook
+npm install
 npm run dev
 
 # For backend
 cd backend
+npm install
 npm start
 
