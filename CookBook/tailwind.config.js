@@ -9,6 +9,7 @@ module.exports = {
         flaxwhite: "#F5F5F5",
         grey: "#F5F5F5",
         bloodred: "#7B2B2B",
+        cloud: "#F9F9F9",
       },
     },
   },

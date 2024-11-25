@@ -25,7 +25,7 @@ function App() {
         <Navbar />
       )}
 
-      <div className={`flex-1 p-4 ${isAuthPage ? "ml-0" : "ml-[250px]"}`}>
+      <div className={`flex-1 ${isAuthPage ? "ml-0" : "ml-[250px]"}`}>
         {/* Main content will be rendered here */}
         <Routes>
           <Route path="/" element={<Home />} /> {/* Home route */}
