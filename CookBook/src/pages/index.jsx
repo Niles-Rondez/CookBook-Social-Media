@@ -6,3 +6,4 @@ export { default as Discover } from "./Discover";
 export { default as Groups } from "./Groups";
 export { default as NewRecipe } from "./NewRecipe";
 export { default as Settings } from "./Settings";
+export { default as Login } from "./Login";
