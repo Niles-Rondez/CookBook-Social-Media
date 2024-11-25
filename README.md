@@ -1,2 +1,2 @@
-# CookBook-Social-Media
+# CookBook Social Media Platform
 // edit description
