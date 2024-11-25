@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { loginUser } from "../api/auth";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -20,12 +21,14 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 login-page">
       <form
         onSubmit={handleLogin}
         className="bg-white p-8 rounded shadow-md w-80"
       >
-        <h1 className="text-2xl font-bold mb-4 text-center">Log In</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-blue-600">
+          Log In
+        </h1>
         {message && <p className="text-center text-red-500 mb-4">{message}</p>}
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700">
@@ -59,6 +62,14 @@ function Login() {
         >
           Log In
         </button>
+        <div className="mt-4 text-center">
+          <p className="text-sm">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-blue-600 hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

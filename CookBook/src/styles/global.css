@@ -1,0 +1,8 @@
+/* Ensure login and signup pages are not affected by global margin */
+.login-page,
+.signup-page {
+  margin-left: 0 !important; /* Remove any left margin */
+  margin-right: 0 !important; /* Remove any right margin */
+  padding-left: 0 !important; /* Ensure no padding is applied on the left */
+  padding-right: 0 !important; /* Ensure no padding is applied on the right */
+}

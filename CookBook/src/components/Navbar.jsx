@@ -12,7 +12,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="bg-michelin h-screen w-[250px] fixed top-0 left-0 flex flex-col justify-between">
+    <nav className="bg-michelin h-full w-[250px] fixed top-0 left-0 flex flex-col justify-between">
       {/* Top Section */}
       <div>
         <div className="flex text-4xl text-center my-5 justify-center">
@@ -27,7 +27,9 @@ function Navbar() {
             <li
               key={item.path}
               className={`px-3 w-full transition-all duration-200 ease-in-out ${
-                location.pathname === item.path ? "bg-bloodred" : "hover:bg-bloodred"
+                location.pathname === item.path
+                  ? "bg-bloodred"
+                  : "hover:bg-bloodred"
               }`}
             >
               <Link
@@ -50,7 +52,9 @@ function Navbar() {
         <ul className="text-flaxwhite text-2xl">
           <li
             className={`transition-all duration-200 ease-in-out w-full ${
-              location.pathname === "/settings" ? "bg-bloodred" : "hover:bg-bloodred"
+              location.pathname === "/settings"
+                ? "bg-bloodred"
+                : "hover:bg-bloodred"
             }`}
           >
             <Link

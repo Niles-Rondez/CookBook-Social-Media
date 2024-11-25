@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { signupUser } from "../api/auth";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -17,12 +18,14 @@ function Signup() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 signup-page">
       <form
         onSubmit={handleSignup}
         className="bg-white p-8 rounded shadow-md w-80"
       >
-        <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-blue-600">
+          Sign Up
+        </h1>
         {message && <p className="text-center text-red-500 mb-4">{message}</p>}
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700">
@@ -56,6 +59,14 @@ function Signup() {
         >
           Sign Up
         </button>
+        <div className="mt-4 text-center">
+          <p className="text-sm">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600 hover:underline">
+              Log In
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

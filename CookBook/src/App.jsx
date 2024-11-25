@@ -1,45 +1,44 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import { Navbar } from "./components";
+import React from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import {
   Home,
-  MyCookbook,
+  Login,
   Signup,
+  MyCookbook,
   Discover,
+  Settings,
   Groups,
   NewRecipe,
-  Settings,
-  Login,
-} from "./pages";
+} from "./pages"; // Importing pages
 
 function App() {
-  const isLoggedIn = Boolean(localStorage.getItem("token"));
+  const location = useLocation();
+
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <Router>
-      <div className="flex">
+    <div className="flex">
+      {/* Render Navbar only if the current route is not Login or Signup */}
+      {location.pathname !== "/login" && location.pathname !== "/signup" && (
         <Navbar />
-        <div className="flex-1 bg-grey p-5 ml-[250px] h-screen content-center">
-          <Routes>
-            <Route
-              path="/"
-              element={isLoggedIn ? <Home /> : <Navigate to="/login" />}
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/mycookbook" element={<MyCookbook />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/groups" element={<Groups />} />
-            <Route path="/newrecipe" element={<NewRecipe />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
-        </div>
+      )}
+
+      <div className={`flex-1 p-4 ${isAuthPage ? "ml-0" : "ml-[250px]"}`}>
+        {/* Main content will be rendered here */}
+        <Routes>
+          <Route path="/" element={<Home />} /> {/* Home route */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/mycookbook" element={<MyCookbook />} />
+          <Route path="/discover" element={<Discover />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/newrecipe" element={<NewRecipe />} />
+          <Route path="/groups" element={<Groups />} />
+        </Routes>
       </div>
-    </Router>
+    </div>
   );
 }
 
