@@ -1,39 +1,34 @@
 const Sequelize = require("sequelize");
-const sequelize = require("../db");
+const sequelize = require("../db"); // This assumes you have configured your Sequelize instance in db.js
 
-const User = require("./User")(sequelize);
-const Post = require("./Post")(sequelize);
-const Comment = require("./Comment")(sequelize);
-const Nutrient = require("./Nutrient")(sequelize);
-const Ingredient = require("./Ingredient")(sequelize);
-const SavedPost = require("./SavedPost")(sequelize);
-const Group = require("./Group")(sequelize);
-const UserGroup = require("./UserGroup")(sequelize);
+// Import models
+const User = require("./User");
+const Followers = require("./Follower");
+const Post = require("./Post");
+const Comment = require("./Comment");
+const Group = require("./Group");
+const SavedPost = require("./SavedPost");
+const Nutrient = require("./Nutrient");
+const Ingredient = require("./Ingredient");
 
-// Relationships
-User.hasMany(Post, { foreignKey: "userID" });
-Post.belongsTo(User, { foreignKey: "userID" });
-
-Post.hasMany(Comment, { foreignKey: "postID" });
-Comment.belongsTo(Post, { foreignKey: "postID" });
-
-User.belongsToMany(User, {
-  through: "Followers",
-  as: "Followers",
-  foreignKey: "FollowerID",
-  otherKey: "FolloweeID",
-});
-
-User.belongsToMany(Group, { through: UserGroup, foreignKey: "userID" });
-Group.belongsToMany(User, { through: UserGroup, foreignKey: "groupID" });
-
-module.exports = {
+// Initialize models
+const models = {
   User,
+  Followers,
   Post,
   Comment,
+  Group,
+  SavedPost,
   Nutrient,
   Ingredient,
-  SavedPost,
-  Group,
-  UserGroup,
 };
+
+// Set up associations
+Object.keys(models).forEach((modelName) => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models);
+  }
+});
+
+// Export models and Sequelize instance
+module.exports = { ...models, sequelize };

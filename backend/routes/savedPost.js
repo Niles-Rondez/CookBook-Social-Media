@@ -1,11 +1,11 @@
 const express = require("express");
-const {
-  savePost,
-  getSavedPosts,
-} = require("../controllers/savedPostController");
 const router = express.Router();
+const savedPostController = require("../controllers/savedPostController"); // Import the controller
 
-router.post("/", savePost); // Save a post
-router.get("/:userId", getSavedPosts); // Get saved posts for a user
+// Route to save a post
+router.post("/", savedPostController.createSavedPost);
+
+// Route to delete a saved post
+router.delete("/:userID/:postID", savedPostController.deleteSavedPost);
 
 module.exports = router;

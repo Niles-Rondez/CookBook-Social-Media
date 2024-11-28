@@ -1,26 +1,28 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const sequelize = require("./db");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const db = require("./db");
 
+// Load environment variables
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+
+// Routes
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
 const commentRoutes = require("./routes/comment");
 const groupRoutes = require("./routes/group");
-
-const app = express();
-app.use(bodyParser.json());
-app.use(cors());
+const savedPostRoutes = require("./routes/savedPost");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/groups", groupRoutes);
+app.use("/api/saved-posts", savedPostRoutes);
 
-sequelize.sync({ alter: true }).then(() => {
-  console.log("Database synced");
-  app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-  });
-});
+// Database connection and server start
+const PORT = process.env.PORT || 5000;
+db.sync({ force: true }) // THIS RECREATES TABLES
+  .then(() => console.log("Database synced"))
+  .catch((err) => console.error("Failed to sync database:", err));
