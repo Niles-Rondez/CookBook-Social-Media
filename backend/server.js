@@ -7,6 +7,7 @@ const postRoutes = require("./routes/post");
 const nutrientRoutes = require("./routes/nutrient");
 const ingredientRoutes = require("./routes/ingredient");
 const commentRoutes = require("./routes/comment");
+const groupRoutes = require("./routes/group");
 
 dotenv.config();
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/nutrients", nutrientRoutes);
 app.use("/api/ingredients", ingredientRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/groups", groupRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
