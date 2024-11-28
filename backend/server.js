@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
 const nutrientRoutes = require("./routes/nutrient");
 const ingredientRoutes = require("./routes/ingredient");
+const commentRoutes = require("./routes/comment");
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/nutrients", nutrientRoutes);
 app.use("/api/ingredients", ingredientRoutes);
+app.use("/api/comments", commentRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
