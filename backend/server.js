@@ -1,7 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const cors = require("cors"); // Import the cors package
+const cors = require("cors");
+
+// Paths
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
 const nutrientRoutes = require("./routes/nutrient");
@@ -9,16 +11,17 @@ const ingredientRoutes = require("./routes/ingredient");
 const commentRoutes = require("./routes/comment");
 const groupRoutes = require("./routes/group");
 const savedPostsRoutes = require("./routes/savedPosts");
+const profileRoutes = require("./routes/profile");
 
 dotenv.config();
 const app = express();
 
-// Enable CORS for your frontend (React running on localhost:5173)
+// Enable CORS for frontend (React running on localhost:5173)
 app.use(
   cors({
-    origin: "http://localhost:5173", // Frontend URL (adjust if it's different)
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -39,6 +42,7 @@ app.use("/api/ingredients", ingredientRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/savedPosts", savedPostsRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
