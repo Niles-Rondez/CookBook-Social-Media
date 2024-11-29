@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [recipes, setRecipes] = useState([]);
-  const [notifications, setNotifications] = useState([]);
+  const [recipes, setRecipes] = useState([
+    {
+      id: 1,
+      title: "Avocado Salad",
+      author: "Jane Doe",
+      profilePic: "https://via.placeholder.com/100",
+      time: "2 hours ago",
+      imgUrl: "https://via.placeholder.com/300",
+      description: "A healthy and delicious avocado salad.",
+      calories: "200 kcal",
+      protein: "5g",
+      carbs: "20g",
+      fat: "15g",
+      tags: ["Healthy", "Salad"],
+    },
+    {
+      id: 2,
+      title: "Chocolate Cake",
+      author: "John Smith",
+      profilePic: "https://via.placeholder.com/100",
+      time: "5 hours ago",
+      imgUrl: "https://via.placeholder.com/300",
+      description: "Rich and creamy chocolate cake.",
+      calories: "400 kcal",
+      protein: "6g",
+      carbs: "50g",
+      fat: "20g",
+      tags: ["Dessert"],
+    },
+  ]);
+
+  const [notifications, setNotifications] = useState([
+    { author: "Admin", message: "New recipe posted!", profilePic: "https://via.placeholder.com/100" },
+    { author: "Chef Alex", message: "Your recipe was liked!", profilePic: "https://via.placeholder.com/100" },
+  ]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [openOptions, setOpenOptions] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await fetch("/src/data/recipes.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch recipes");
-        }
-        const data = await response.json();
-        setRecipes(data);
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-      }
-    };
-
-    const fetchNotifications = async () => {
-      try {
-        const response = await fetch("/src/data/notifications.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch notifications");
-        }
-        const data = await response.json();
-        setNotifications(data.notifications);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
-
-    fetchRecipes();
-    fetchNotifications();
-  }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -52,13 +52,8 @@ function Home() {
     setShowNotifications(false);
   };
 
-  const toggleOptions = (id) => {
-    setOpenOptions((prev) => (prev === id ? null : id));
-  };
-
-  const handleSavePost = (recipeId) => {
-    alert(`Recipe with ID: ${recipeId} has been saved.`);
-    setOpenOptions(null);
+  const handleAddRecipe = () => {
+    alert("Add New Recipe functionality not implemented.");
   };
 
   const getTagColor = (tag) => {
@@ -66,11 +61,17 @@ function Home() {
       Healthy: "bg-green-100 text-green-800",
       Salad: "bg-blue-100 text-blue-800",
       Dessert: "bg-yellow-100 text-yellow-800",
-      Snack: "bg-purple-100 text-purple-800",
-      Keto: "bg-teal-100 text-teal-800",
       Default: "bg-gray-100 text-gray-800",
     };
     return colors[tag] || colors.Default;
+  };
+
+  const toggleOptions = (id) => {
+    setOpenOptions((prev) => (prev === id ? null : id));
+  };
+
+  const handleSavePost = (id) => {
+    alert(`Post ${id} saved!`);
   };
 
   const filteredRecipes = recipes.filter(
@@ -162,6 +163,13 @@ function Home() {
               className="bg-transparent outline-none w-full text-gray-600 placeholder-gray-400 rounded-full px-2"
             />
           </div>
+          <button
+            onClick={handleAddRecipe}
+            className="flex items-center space-x-2 bg-red-600 text-white px-6 py-2 rounded-full font-semibold text-sm shadow hover:bg-red-700 transition"
+          >
+            <span>+</span>
+            <span>New Recipe</span>
+          </button>
         </div>
 
         {/* Posts */}
@@ -203,11 +211,14 @@ function Home() {
                     <p className="text-sm text-gray-400">{recipe.time}</p>
                   </div>
                 </div>
+
+                {/* Adjusted Image Section */}
                 <img
                   src={recipe.imgUrl}
                   alt={recipe.title}
-                  className="w-full h-48 object-cover rounded-lg"
+                  className="w-full h-[350px] object-cover rounded-lg"
                 />
+
                 <div>
                   <h2 className="text-2xl font-semibold text-gray-800">
                     {recipe.title}
@@ -215,9 +226,7 @@ function Home() {
                   <p className="text-gray-600">{recipe.description}</p>
                 </div>
                 <div className="flex space-x-2">
-                  <span className="text-gray-500 text-sm">
-                    {recipe.calories}
-                  </span>
+                  <span className="text-gray-500 text-sm">{recipe.calories}</span>
                   <span className="text-gray-500 text-sm">{recipe.protein}</span>
                   <span className="text-gray-500 text-sm">{recipe.carbs}</span>
                   <span className="text-gray-500 text-sm">{recipe.fat}</span>
@@ -237,7 +246,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p className="text-gray-500">No recipes found.</p>
+            <p className="text-center text-gray-500">No recipes found.</p>
           )}
         </div>
       </div>
