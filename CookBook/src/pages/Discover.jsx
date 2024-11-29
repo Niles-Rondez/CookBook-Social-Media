@@ -17,11 +17,9 @@ function Discover() {
       profilePic: "https://via.placeholder.com/100",
       time: "3 hours ago",
       imgUrl: "https://via.placeholder.com/300",
-      description: "Fluffy pancakes with a protein boost.",
+      description:
+        "Indulge in these fluffy high-protein pancakes that are perfect for breakfast or as a post-workout treat. They're light, airy, and packed with the goodness of oats and whey protein. Serve them with a drizzle of honey, a handful of fresh berries, and a dollop of Greek yogurt for the perfect start to your day!",
       calories: "350 kcal",
-      protein: "25g",
-      carbs: "45g",
-      fat: "10g",
       servings: 4,
       cookTime: "20 mins",
       rating: 4.5,
@@ -35,11 +33,9 @@ function Discover() {
       profilePic: "https://via.placeholder.com/100",
       time: "5 hours ago",
       imgUrl: "https://via.placeholder.com/300",
-      description: "A delicious keto-friendly wrap.",
+      description:
+        "This keto avocado wrap is a delicious and healthy option for lunch. Packed with fresh veggies, creamy avocado, and a touch of lime, it’s both satisfying and low in carbs. Perfect for busy days when you need something quick yet nutritious!",
       calories: "250 kcal",
-      protein: "15g",
-      carbs: "10g",
-      fat: "20g",
       servings: 2,
       cookTime: "10 mins",
       rating: 4.2,
@@ -53,11 +49,9 @@ function Discover() {
       profilePic: "https://via.placeholder.com/100",
       time: "6 hours ago",
       imgUrl: "https://via.placeholder.com/300",
-      description: "A colorful bowl of veggies and grains.",
+      description:
+        "A vibrant vegan Buddha bowl filled with fresh, colorful veggies, protein-packed chickpeas, and wholesome grains. Tossed with a tangy tahini dressing, this bowl is a feast for the eyes and the palate. It’s perfect for a quick, nutritious dinner or meal prep!",
       calories: "400 kcal",
-      protein: "18g",
-      carbs: "55g",
-      fat: "12g",
       servings: 3,
       cookTime: "15 mins",
       rating: 4.8,
@@ -99,8 +93,8 @@ function Discover() {
 
   return (
     <div className="bg-gray-100 min-h-screen flex">
-      {/* Notifications Panel */}
-      {showNotifications && (
+       {/* Notifications Panel */}
+       {showNotifications && (
         <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-md overflow-y-auto z-50">
           <div className="flex justify-between items-center p-4 border-b">
             <h2 className="text-xl font-bold">Notifications</h2>
@@ -134,15 +128,10 @@ function Discover() {
           </div>
         </div>
       )}
-
       {/* Main Content */}
-      <div
-        className={`flex-1 p-6 transition-all duration-300 ${
-          showNotifications ? "mr-80" : ""
-        }`}
-      >
-        {/* Notifications Toggle Button */}
-        <div className="absolute top-4 right-4">
+      <div className="flex-1 p-6">
+         {/* Notifications Toggle Button */}
+         <div className="absolute top-4 right-4">
           <button
             onClick={toggleNotifications}
             className="relative flex items-center bg-white p-3 rounded-full shadow-md hover:shadow-lg transition"
@@ -168,24 +157,21 @@ function Discover() {
             )}
           </button>
         </div>
-
-        {/* Search and Tags */}
-        <div className="bg-white p-4 rounded-lg shadow-md mb-6 max-w-4xl mx-auto">
+              {/* Search and Tags */}
+              <div className="bg-white p-6 rounded-lg shadow-md mb-6 max-w-4xl mx-auto">
           <div className="flex items-center space-x-4">
-            <div className="flex-grow bg-gray-100 rounded-full p-3">
-              <input
-                type="text"
-                placeholder="Search CookBook"
-                value={searchTerm}
-                onChange={handleSearch}
-                className="w-full bg-transparent outline-none text-gray-700"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="Search CookBook"
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full bg-gray-100 rounded-full p-3 outline-none text-gray-700"
+            />
             <button className="bg-red-500 text-white px-4 py-2 rounded-full shadow hover:bg-red-600 transition">
               Search
             </button>
           </div>
-          <div className="flex flex-wrap mt-4">
+          <div className="flex flex-wrap justify-center mt-4">
             {allTags.map((tag) => (
               <button
                 key={tag}
@@ -199,54 +185,52 @@ function Discover() {
         </div>
 
         {/* Posts */}
-        <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="space-y-6 max-w-3xl mx-auto">
           {filteredPosts.map((post) => (
             <div
               key={post.id}
-              className="bg-white rounded-lg shadow-md flex p-4 space-x-4"
+              className="bg-white rounded-lg shadow-md flex flex-col p-6 space-y-4"
             >
-              <img
-                src={post.imgUrl}
-                alt={post.title}
-                className="w-48 h-48 rounded-lg object-cover"
-              />
-              <div className="flex flex-col justify-between flex-grow">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800">{post.title}</h3>
-                  <p className="text-gray-500 text-sm">
-                    By {post.author} • {post.time}
-                  </p>
-                  <p className="text-gray-700 mt-2">{post.description}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="flex space-x-4">
+                <img
+                  src={post.imgUrl}
+                  alt={post.title}
+                  className="w-48 h-48 rounded-lg object-cover"
+                />
+                <div className="flex flex-col justify-between flex-grow">
                   <div>
-                    <p className="text-gray-500 text-sm">Calories</p>
-                    <p className="font-bold">{post.calories}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Protein</p>
-                    <p className="font-bold">{post.protein}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Servings</p>
-                    <p className="font-bold">{post.servings}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Cook Time</p>
-                    <p className="font-bold">{post.cookTime}</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center space-x-2">
-                    <p className="text-yellow-500 font-bold">
-                      {post.rating} ★
+                    <h3 className="text-xl font-bold text-gray-800">{post.title}</h3>
+                    <p className="text-gray-500 text-sm">
+                      By {post.author} • {post.time}
                     </p>
-                    <p className="text-gray-500 text-sm">({post.reviews} reviews)</p>
+                    <p className="text-gray-700 mt-4">{post.description}</p>
                   </div>
-                  <button className="bg-red-500 text-white px-4 py-2 rounded-full shadow hover:bg-red-600 transition">
-                    View Recipe
-                  </button>
                 </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4 mt-4">
+                <div>
+                  <p className="text-gray-500 text-sm">Servings</p>
+                  <p className="font-bold">{post.servings}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-sm">Cook Time</p>
+                  <p className="font-bold">{post.cookTime}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-sm">Calories</p>
+                  <p className="font-bold">{post.calories}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center space-x-2">
+                  <p className="text-yellow-500 font-bold">{post.rating} ★</p>
+                  <p className="text-gray-500 text-sm">
+                    ({post.reviews} reviews)
+                  </p>
+                </div>
+                <button className="bg-red-500 text-white px-4 py-2 rounded-full shadow hover:bg-red-600 transition">
+                  View Recipe
+                </button>
               </div>
             </div>
           ))}
