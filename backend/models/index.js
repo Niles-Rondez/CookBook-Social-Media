@@ -1,15 +1,15 @@
 const Sequelize = require("sequelize");
-const sequelize = require("../db"); // This assumes you have configured your Sequelize instance in db.js
+const sequelize = require("../db"); // Make sure your db.js file is exporting a valid Sequelize instance
 
 // Import models
-const User = require("./User");
-const Followers = require("./Follower");
-const Post = require("./Post");
-const Comment = require("./Comment");
-const Group = require("./Group");
-const SavedPost = require("./SavedPost");
-const Nutrient = require("./Nutrient");
-const Ingredient = require("./Ingredient");
+const User = require("./User")(sequelize, Sequelize.DataTypes);
+const Followers = require("./Follower")(sequelize, Sequelize.DataTypes);
+const Post = require("./Post")(sequelize, Sequelize.DataTypes);
+const Comment = require("./Comment")(sequelize, Sequelize.DataTypes);
+const Group = require("./Group")(sequelize, Sequelize.DataTypes);
+const SavedPost = require("./SavedPost")(sequelize, Sequelize.DataTypes);
+const Nutrient = require("./Nutrient")(sequelize, Sequelize.DataTypes);
+const Ingredient = require("./Ingredient")(sequelize, Sequelize.DataTypes);
 
 // Initialize models
 const models = {
@@ -26,7 +26,7 @@ const models = {
 // Set up associations
 Object.keys(models).forEach((modelName) => {
   if (models[modelName].associate) {
-    models[modelName].associate(models);
+    models[modelName].associate(models); // Ensure associations are set up
   }
 });
 
