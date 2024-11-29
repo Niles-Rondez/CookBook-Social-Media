@@ -1,20 +1,15 @@
-// backend/models/SavedPost.js
-const mongoose = require("mongoose");
+const { DataTypes } = require("sequelize");
 
-const SavedPostSchema = new mongoose.Schema(
-  {
-    userID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    postID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
+module.exports = (sequelize) => {
+  const SavedPost = sequelize.define("SavedPost", {
+    userID: { type: DataTypes.INTEGER, primaryKey: true },
+    postID: { type: DataTypes.INTEGER, primaryKey: true },
+  });
 
-module.exports = mongoose.model("SavedPost", SavedPostSchema);
+  // Define association between SavedPost and Post
+  SavedPost.associate = (models) => {
+    SavedPost.belongsTo(models.Post, { foreignKey: "postID", as: "Post" }); // Adding association to Post
+  };
+
+  return SavedPost;
+};

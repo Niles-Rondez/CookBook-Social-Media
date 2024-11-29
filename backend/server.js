@@ -1,49 +1,33 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-const cors = require("cors");
+const db = require("./db");
 
-// Paths
-const authRoutes = require("./routes/auth");
-const postRoutes = require("./routes/post");
-const nutrientRoutes = require("./routes/nutrient");
-const ingredientRoutes = require("./routes/ingredient");
-const commentRoutes = require("./routes/comment");
-const groupRoutes = require("./routes/group");
-const savedPostsRoutes = require("./routes/savedPosts");
-const profileRoutes = require("./routes/profile");
-
+// Load environment variables
 dotenv.config();
+
 const app = express();
-
-// Enable CORS for frontend (React running on localhost:5173)
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// Middleware to parse incoming JSON requests
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
-
 // Routes
+const authRoutes = require("./routes/auth");
+const postRoutes = require("./routes/post");
+const commentRoutes = require("./routes/comment");
+const groupRoutes = require("./routes/group");
+const savedPostRoutes = require("./routes/savedPost");
+const followerRoutes = require("./routes/follower"); // Import follower routes
+
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
-app.use("/api/nutrients", nutrientRoutes);
-app.use("/api/ingredients", ingredientRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/groups", groupRoutes);
-app.use("/api/savedPosts", savedPostsRoutes);
-app.use("/api/profile", profileRoutes);
+app.use("/api/saved-posts", savedPostRoutes);
+app.use("/api/follow", followerRoutes); // Add follower route
 
-// Start server
+// Database connection and server start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+db.sync() // Remove { force: true } after initial setup
+  .then(() => {
+    console.log("Database synced");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => console.error("Failed to sync database:", err));

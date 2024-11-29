@@ -1,66 +1,46 @@
-const Post = require("../models/Post");
+const { Post, User } = require("../models"); // Ensure this is correct
 
-const createPost = async (req, res) => {
-  const { postHeader, description, prepTime, dietType, imageUrl } = req.body;
-
+exports.createPost = async (req, res) => {
   try {
-    const newPost = new Post({
-      userId: req.user.id,
+    const { userID, postHeader, description, prepTime, dietType } = req.body;
+    const post = await Post.create({
+      userID,
       postHeader,
       description,
       prepTime,
       dietType,
-      imageUrl,
     });
-
-    await newPost.save();
-    res.status(201).json(newPost);
+    res.status(201).json(post);
   } catch (error) {
-    res.status(500).json({ message: error.message || "Error creating post." });
+    res.status(500).json({ error: error.message });
   }
 };
 
-const getAllPosts = async (req, res) => {
+exports.getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate(
-      "userId",
-      "username profilePicture"
-    );
+    const posts = await Post.findAll({
+      include: {
+        model: User,
+        as: "user", // Make sure to match the alias used in the association
+      },
+    });
     res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json({ message: error.message || "Error fetching posts." });
+    res.status(500).json({ error: error.message });
   }
 };
 
-const getPostById = async (req, res) => {
+exports.getPostById = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate(
-      "userId",
-      "username profilePicture"
-    );
-    if (!post) return res.status(404).json({ message: "Post not found." });
+    const post = await Post.findByPk(req.params.id, {
+      include: {
+        model: User,
+        as: "user", // Make sure to match the alias used in the association
+      },
+    });
+    if (!post) return res.status(404).json({ message: "Post not found" });
     res.status(200).json(post);
   } catch (error) {
-    res.status(500).json({ message: error.message || "Error fetching post." });
+    res.status(500).json({ error: error.message });
   }
 };
-
-const likePost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post not found." });
-
-    if (post.likes.includes(req.user.id)) {
-      post.likes = post.likes.filter((id) => id !== req.user.id);
-    } else {
-      post.likes.push(req.user.id);
-    }
-
-    await post.save();
-    res.status(200).json(post);
-  } catch (error) {
-    res.status(500).json({ message: error.message || "Error liking post." });
-  }
-};
-
-module.exports = { createPost, getAllPosts, getPostById, likePost };

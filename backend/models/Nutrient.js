@@ -1,21 +1,18 @@
-const mongoose = require("mongoose");
-
-const NutrientSchema = new mongoose.Schema(
-  {
-    postId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
-      required: true,
+const { DataTypes } = require("sequelize");
+module.exports = (sequelize) => {
+  return sequelize.define("Nutrient", {
+    nutrientID: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    calories: { type: Number, required: true },
-    protein: { type: Number, required: true },
-    fats: { type: Number, required: true },
-    carbohydrates: { type: Number, required: true },
-    fiber: { type: Number, required: true },
-    sugar: { type: Number },
-    cholesterol: { type: Number },
-  },
-  { timestamps: true }
-);
-
-module.exports = mongoose.model("Nutrient", NutrientSchema);
+    postID: { type: DataTypes.INTEGER, allowNull: false },
+    calories: { type: DataTypes.FLOAT, allowNull: false },
+    protein: { type: DataTypes.FLOAT, allowNull: false },
+    fats: { type: DataTypes.FLOAT, allowNull: false },
+    carbohydrates: { type: DataTypes.FLOAT, allowNull: false },
+    fiber: { type: DataTypes.FLOAT, allowNull: false },
+    sugar: { type: DataTypes.FLOAT, allowNull: false },
+    cholesterol: { type: DataTypes.FLOAT, allowNull: false },
+  });
+};

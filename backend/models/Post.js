@@ -1,21 +1,50 @@
-const mongoose = require("mongoose");
+const { DataTypes } = require("sequelize");
 
-const PostSchema = new mongoose.Schema(
-  {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+module.exports = (sequelize) => {
+  // Define the Post model
+  const Post = sequelize.define("Post", {
+    postID: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    postHeader: { type: String, required: true },
-    description: { type: String, required: true },
-    prepTime: { type: Number, required: true },
-    dietType: { type: String, required: true }, // e.g., vegan, keto
-    imageUrl: { type: String },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    rating: { type: Number, default: 0 },
-  },
-  { timestamps: true }
-);
+    userID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    postHeader: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    prepTime: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    dateCreated: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    dietType: {
+      type: DataTypes.STRING, // e.g., 'keto', 'high protein'
+    },
+    rating: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0,
+    },
+  });
 
-module.exports = mongoose.model("Post", PostSchema);
+  // Associations (One Post belongs to One User)
+  Post.associate = (models) => {
+    // One Post belongs to one User
+    Post.belongsTo(models.User, { foreignKey: "userID", as: "user" });
+
+    // One Post can have many SavedPosts
+    Post.hasMany(models.SavedPost, { foreignKey: "postID", as: "SavedPosts" });
+  };
+
+  return Post;
+};

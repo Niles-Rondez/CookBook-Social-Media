@@ -1,17 +1,14 @@
-const mongoose = require("mongoose");
-
-const IngredientSchema = new mongoose.Schema(
-  {
-    postId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
-      required: true,
+const { DataTypes } = require("sequelize");
+module.exports = (sequelize) => {
+  return sequelize.define("Ingredient", {
+    ingredientID: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    ingredientName: { type: String, required: true },
-    amount: { type: Number, required: true },
-    unit: { type: String, required: true }, // e.g., grams, cups
-  },
-  { timestamps: true }
-);
-
-module.exports = mongoose.model("Ingredient", IngredientSchema);
+    postID: { type: DataTypes.INTEGER, allowNull: false },
+    ingredientName: { type: DataTypes.STRING, allowNull: false },
+    amount: { type: DataTypes.FLOAT, allowNull: false },
+    unit: { type: DataTypes.STRING, allowNull: false }, // e.g., 'grams', 'cups'
+  });
+};
