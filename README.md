@@ -79,10 +79,3 @@ npm run dev
 
 This will start the frontend and make it available on a local development server.
 
-### Step 5: Access the App
-
-Once both the backend and frontend are running, you can access the application by navigating to:
-
-- Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend: [http://localhost:5000](http://localhost:5000) (API endpoints)
-
