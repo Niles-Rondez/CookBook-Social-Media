@@ -39,7 +39,11 @@ module.exports = (sequelize) => {
 
   // Associations (One Post belongs to One User)
   Post.associate = (models) => {
+    // One Post belongs to one User
     Post.belongsTo(models.User, { foreignKey: "userID", as: "user" });
+
+    // One Post can have many SavedPosts
+    Post.hasMany(models.SavedPost, { foreignKey: "postID", as: "SavedPosts" });
   };
 
   return Post;

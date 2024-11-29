@@ -1,4 +1,4 @@
-const { SavedPost } = require("../models"); // Import the SavedPost model
+const { SavedPost, Post } = require("../models");
 
 // Create a new saved post
 exports.createSavedPost = async (req, res) => {
@@ -40,6 +40,34 @@ exports.deleteSavedPost = async (req, res) => {
     await savedPost.destroy();
 
     res.status(200).json({ message: "Saved post removed" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get all saved posts for a specific user, with post details
+exports.getSavedPostsByUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    // Find all saved posts for the user
+    const savedPosts = await SavedPost.findAll({
+      where: { userID },
+      include: {
+        model: Post,
+        as: "Post", // Include the alias here (adjust the alias as per your association)
+        attributes: ["postHeader", "description", "prepTime", "dietType"], // Include post details
+      },
+    });
+
+    if (savedPosts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No saved posts found for this user" });
+    }
+
+    res.status(200).json(savedPosts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
