@@ -18,7 +18,12 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
   try {
-    const posts = await Post.findAll({ include: User });
+    const posts = await Post.findAll({
+      include: {
+        model: User,
+        as: "user", // Make sure to match the alias used in the association
+      },
+    });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -27,7 +32,12 @@ exports.getPosts = async (req, res) => {
 
 exports.getPostById = async (req, res) => {
   try {
-    const post = await Post.findByPk(req.params.id, { include: User });
+    const post = await Post.findByPk(req.params.id, {
+      include: {
+        model: User,
+        as: "user", // Make sure to match the alias used in the association
+      },
+    });
     if (!post) return res.status(404).json({ message: "Post not found" });
     res.status(200).json(post);
   } catch (error) {

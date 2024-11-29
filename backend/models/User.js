@@ -35,6 +35,12 @@ module.exports = (sequelize) => {
       as: "Followees", // Alias for the users following this user
       foreignKey: "FolloweeID",
     });
+
+    // Adding the association between User and Post
+    User.hasMany(models.Post, {
+      foreignKey: "userID", // Define the foreign key in Post that links to User
+      as: "posts", // Alias for the associated posts
+    });
   };
 
   return User;
