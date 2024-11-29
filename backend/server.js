@@ -14,12 +14,14 @@ const postRoutes = require("./routes/post");
 const commentRoutes = require("./routes/comment");
 const groupRoutes = require("./routes/group");
 const savedPostRoutes = require("./routes/savedPost");
+const followerRoutes = require("./routes/follower"); // Import follower routes
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/saved-posts", savedPostRoutes);
+app.use("/api/follow", followerRoutes); // Add follower route
 
 // Database connection and server start
 const PORT = process.env.PORT || 5000;
