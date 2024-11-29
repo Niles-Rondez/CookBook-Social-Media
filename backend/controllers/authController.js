@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const { Op } = require("sequelize"); // Import Op directly from sequelize package
 
 exports.signup = async (req, res) => {
   try {
@@ -22,7 +23,7 @@ exports.login = async (req, res) => {
     const { usernameOrEmail, password } = req.body;
     const user = await User.findOne({
       where: {
-        [Op.or]: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+        [Op.or]: [{ email: usernameOrEmail }, { username: usernameOrEmail }], // Using Op here
       },
     });
     if (!user || !(await bcrypt.compare(password, user.password))) {
