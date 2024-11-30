@@ -80,6 +80,10 @@ function Discover() {
     setSearchTerm(e.target.value);
   };
 
+  const handleAddRecipe = () => {
+    alert("Feature to add a new recipe is under development!");
+  };
+
   const filteredPosts = posts.filter((post) => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTags = selectedTags.length === 0 || selectedTags.some((tag) => post.tags.includes(tag));
@@ -92,9 +96,14 @@ function Discover() {
       : "bg-gray-100 text-gray-800";
 
   return (
-    <div className="bg-gray-100 min-h-screen flex">
-       {/* Notifications Panel */}
-       {showNotifications && (
+    <div
+  className={`flex-1 p-6 transition-all duration-300 ${
+    showNotifications ? "mr-80" : ""
+  }`}
+>
+
+      {/* Notifications Panel */}
+      {showNotifications && (
         <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-md overflow-y-auto z-50">
           <div className="flex justify-between items-center p-4 border-b">
             <h2 className="text-xl font-bold">Notifications</h2>
@@ -130,8 +139,8 @@ function Discover() {
       )}
       {/* Main Content */}
       <div className="flex-1 p-6">
-         {/* Notifications Toggle Button */}
-         <div className="absolute top-4 right-4">
+        {/* Notifications Toggle Button */}
+        <div className="absolute top-4 right-4">
           <button
             onClick={toggleNotifications}
             className="relative flex items-center bg-white p-3 rounded-full shadow-md hover:shadow-lg transition"
@@ -157,33 +166,44 @@ function Discover() {
             )}
           </button>
         </div>
-              {/* Search and Tags */}
-              <div className="bg-white p-6 rounded-lg shadow-md mb-6 max-w-4xl mx-auto">
-          <div className="flex items-center space-x-4">
+        {/* Search and New Recipe */}
+        <div className="flex justify-between items-center bg-white p-4 rounded-full shadow-md w-full max-w-4xl mb-6 mx-auto space-x-4">
+          <div className="flex items-center bg-gray-100 p-3 rounded-full flex-grow">
             <input
               type="text"
               placeholder="Search CookBook"
               value={searchTerm}
               onChange={handleSearch}
-              className="w-full bg-gray-100 rounded-full p-3 outline-none text-gray-700"
+              className="bg-transparent outline-none w-full text-gray-600 placeholder-gray-400 rounded-full px-2"
             />
-            <button className="bg-red-500 text-white px-4 py-2 rounded-full shadow hover:bg-red-600 transition">
-              Search
-            </button>
           </div>
-          <div className="flex flex-wrap justify-center mt-4">
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => toggleTag(tag)}
-                className={`text-sm px-3 py-1 rounded-full m-1 shadow-sm transition ${getTagColor(tag)}`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+          <button
+            onClick={handleAddRecipe}
+            className="flex items-center space-x-2 bg-red-600 text-white px-6 py-2 rounded-full font-semibold text-sm shadow hover:bg-red-700 transition"
+          >
+            <span>+</span>
+            <span>New Recipe</span>
+          </button>
         </div>
-
+        {/* Tag Phrase */}
+<p
+  className="text-center text-lg font-semibold text-gray-800 mb-4"
+  style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "40px" }}
+>
+  Create, Explore, & Share Recipes all Around the World
+</p>
+        {/* Tags */}
+        <div className="flex flex-wrap justify-center mb-6">
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => toggleTag(tag)}
+              className={`text-sm px-3 py-1 rounded-full m-1 shadow-sm transition ${getTagColor(tag)}`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
         {/* Posts */}
         <div className="space-y-6 max-w-3xl mx-auto">
           {filteredPosts.map((post) => (
