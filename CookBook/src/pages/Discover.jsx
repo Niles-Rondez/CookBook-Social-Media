@@ -114,6 +114,20 @@ function Discover() {
               ✕
             </button>
           </div>
+
+             {/* Profile Section */}
+             <div className="flex items-center p-4 border-b">
+            <img
+              src="https://via.placeholder.com/100"
+              alt="Profile"
+              className="w-16 h-16 rounded-full object-cover mr-4"
+            />
+            <div>
+              <h2 className="text-lg font-bold">John Doe</h2>
+              <p className="text-gray-500">Followers: 100 | Following: 150</p>
+            </div>
+          </div>
+
           <div className="p-4">
             {notifications.length > 0 ? (
               notifications.map((notif, index) => (
