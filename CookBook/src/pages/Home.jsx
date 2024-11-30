@@ -85,6 +85,7 @@ function Home() {
       {/* Notifications Panel */}
       {showNotifications && (
         <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-md overflow-y-auto z-50">
+          {/* Notifications Header */}
           <div className="flex justify-between items-center p-4 border-b">
             <h2 className="text-xl font-bold">Notifications</h2>
             <button
@@ -94,6 +95,21 @@ function Home() {
               ✕
             </button>
           </div>
+
+          {/* Profile Section */}
+          <div className="flex items-center p-4 border-b">
+            <img
+              src="https://via.placeholder.com/100"
+              alt="Profile"
+              className="w-16 h-16 rounded-full object-cover mr-4"
+            />
+            <div>
+              <h2 className="text-lg font-bold">John Doe</h2>
+              <p className="text-gray-500">Followers: 100 | Following: 150</p>
+            </div>
+          </div>
+
+          {/* Notifications List */}
           <div className="p-4">
             {notifications.length > 0 ? (
               notifications.map((notif, index) => (
@@ -225,17 +241,17 @@ function Home() {
                   </h2>
                   <p className="text-gray-600">{recipe.description}</p>
                 </div>
-                <div className="flex space-x-2">
-                  <span className="text-gray-500 text-sm">{recipe.calories}</span>
-                  <span className="text-gray-500 text-sm">{recipe.protein}</span>
-                  <span className="text-gray-500 text-sm">{recipe.carbs}</span>
-                  <span className="text-gray-500 text-sm">{recipe.fat}</span>
+                <div className="flex justify-between text-sm text-gray-400">
+                  <span>{recipe.calories}</span>
+                  <span>{recipe.protein}</span>
+                  <span>{recipe.carbs}</span>
+                  <span>{recipe.fat}</span>
                 </div>
                 <div className="flex space-x-2">
                   {recipe.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className={`px-3 py-1 text-xs rounded-full ${getTagColor(
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${getTagColor(
                         tag
                       )}`}
                     >
@@ -246,7 +262,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">No recipes found.</p>
+            <p className="text-gray-400 text-center">No recipes found</p>
           )}
         </div>
       </div>
