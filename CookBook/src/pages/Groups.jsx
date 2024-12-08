@@ -14,6 +14,12 @@ function GroupsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("My Groups");
   const [filteredGroups, setFilteredGroups] = useState(allGroups);
+  const [showModal, setShowModal] = useState(false);
+  const [newGroup, setNewGroup] = useState({
+    name: "",
+    creator: "",
+    privacy: "public",
+  });
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
@@ -30,8 +36,32 @@ function GroupsPage() {
     setActiveTab(tab);
   };
 
+  const handleNewGroupChange = (e) => {
+    const { name, value } = e.target;
+    setNewGroup((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddGroup = () => {
+    if (!newGroup.name || !newGroup.creator) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    const groupToAdd = {
+      id: allGroups.length + 1,
+      name: newGroup.name,
+      creator: newGroup.creator,
+      members: Math.floor(Math.random() * 500) + 1,
+      privacy: newGroup.privacy,
+    };
+
+    setFilteredGroups((prev) => [groupToAdd, ...prev]);
+    setShowModal(false);
+    setNewGroup({ name: "", creator: "", privacy: "public" });
+  };
+
   return (
-    <div className="p-8 font-sans bg-gray-100">
+    <div className="p-8 font-sans bg-gray-100 relative">
       {/* "50 Groups" Display */}
       <div className="flex justify-between items-center mb-4">
         <span
@@ -42,7 +72,7 @@ function GroupsPage() {
           <span className="text-red-600 font-semibold">Groups</span>
         </span>
         <button
-          onClick={() => alert("tsaa")}
+          onClick={() => setShowModal(true)}
           className="flex items-center space-x-2 bg-red-600 text-white px-6 py-2 rounded-full font-semibold text-sm shadow hover:bg-red-700 transition"
         >
           <span>+</span>
@@ -123,6 +153,69 @@ function GroupsPage() {
           </div>
         ))}
       </div>
+
+      {/* New Group Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
+            <h2 className="text-3xl font-bold mb-4 text-center">
+              Start Your Own Community with CookBook!
+            </h2>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-semibold mb-2">
+                Group Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={newGroup.name}
+                onChange={handleNewGroupChange}
+                className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-red-600"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-semibold mb-2">
+                Creator Name
+              </label>
+              <input
+                type="text"
+                name="creator"
+                value={newGroup.creator}
+                onChange={handleNewGroupChange}
+                className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-red-600"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-semibold mb-2">
+                Privacy Settings
+              </label>
+              <select
+                name="privacy"
+                value={newGroup.privacy}
+                onChange={handleNewGroupChange}
+                className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-red-600"
+              >
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddGroup}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Add Group
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
