@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const [recipes, setRecipes] = useState([
     {
       id: 1,
@@ -53,7 +55,7 @@ function Home() {
   };
 
   const handleAddRecipe = () => {
-    alert("Add New Recipe functionality not implemented.");
+    navigate("/newrecipe");
   };
 
   const getTagColor = (tag) => {
