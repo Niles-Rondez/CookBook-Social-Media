@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function Discover() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,6 +63,8 @@ function Discover() {
 
   const allTags = ["Healthy", "Keto", "Vegan", "Breakfast", "Lunch", "Dinner"];
 
+  const navigate = useNavigate(); // Initialize navigate function
+
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -81,7 +84,7 @@ function Discover() {
   };
 
   const handleAddRecipe = () => {
-    alert("Feature to add a new recipe is under development!");
+    navigate("/newrecipe"); // Navigate to the new recipe page
   };
 
   const filteredPosts = posts.filter((post) => {
@@ -97,11 +100,10 @@ function Discover() {
 
   return (
     <div
-  className={`flex-1 p-6 transition-all duration-300 ${
-    showNotifications ? "mr-80" : ""
-  }`}
->
-
+      className={`flex-1 p-6 transition-all duration-300 ${
+        showNotifications ? "mr-80" : ""
+      }`}
+    >
       {/* Notifications Panel */}
       {showNotifications && (
         <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-md overflow-y-auto z-50">
@@ -115,8 +117,8 @@ function Discover() {
             </button>
           </div>
 
-             {/* Profile Section */}
-             <div className="flex items-center p-4 border-b">
+          {/* Profile Section */}
+          <div className="flex items-center p-4 border-b">
             <img
               src="https://via.placeholder.com/100"
               alt="Profile"
@@ -200,12 +202,12 @@ function Discover() {
           </button>
         </div>
         {/* Tag Phrase */}
-<p
-  className="text-center text-lg font-semibold text-gray-800 mb-4"
-  style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "40px" }}
->
-  Create, Explore, & Share Recipes all Around the World
-</p>
+        <p
+          className="text-center text-lg font-semibold text-gray-800 mb-4"
+          style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "40px" }}
+        >
+          Create, Explore, & Share Recipes all Around the World
+        </p>
         {/* Tags */}
         <div className="flex flex-wrap justify-center mb-6">
           {allTags.map((tag) => (
