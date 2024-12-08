@@ -122,7 +122,7 @@ function NewRecipe() {
             <button
               type="button"
               onClick={handleAddIngredient}
-              className="text-blue-500 hover:text-blue-700 mt-2"
+              className="bg-red-600 text-white py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-30"
             >
               + Add Ingredient
             </button>
@@ -146,7 +146,7 @@ function NewRecipe() {
             <button
               type="button"
               onClick={handleAddStep}
-              className="text-blue-500 hover:text-blue-700"
+              className="bg-red-600 text-white py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300"
             >
               + Add Step
             </button>
@@ -232,7 +232,7 @@ function NewRecipe() {
           <div className="text-center mt-6">
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300"
+              className="bg-red-600 text-white py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300"
             >
               Publish Recipe
             </button>
