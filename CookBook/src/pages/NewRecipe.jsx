@@ -122,7 +122,7 @@ function NewRecipe() {
             <button
               type="button"
               onClick={handleAddIngredient}
-              className="bg-red-600 text-white py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-30"
+              className="bg-red-600 text-white py-1 px-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-30"
             >
               + Add Ingredient
             </button>
@@ -146,31 +146,39 @@ function NewRecipe() {
             <button
               type="button"
               onClick={handleAddStep}
-              className="bg-red-600 text-white py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300"
+              className="bg-red-600 text-white py-1 px-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300"
             >
               + Add Step
             </button>
           </div>
 
-          {/* Recipe Photo */}
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Add Recipe Photos</h2>
-            <input
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              accept="image/*"
-            />
-            {image && (
-              <div className="mt-4">
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="Recipe preview"
-                  className="w-32 h-32 object-cover mt-2 rounded-lg"
-                />
-              </div>
-            )}
-          </div>
+            {/* Recipe Photo */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">Add Recipe Photos</h2>
+              <label 
+                htmlFor="recipe-photo" 
+                className="bg-red-600 text-white py-1 px-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 cursor-pointer"
+              >
+                Upload Photo
+              </label>
+              <input
+                id="recipe-photo"
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+                className="hidden"
+                accept="image/*"
+              />
+              {image && (
+                <div className="mt-4">
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt="Recipe preview"
+                    className="w-32 h-32 object-cover mt-2 rounded-lg"
+                  />
+                </div>
+              )}
+            </div>
+
 
           {/* Nutrition Facts */}
           <div>
