@@ -1,29 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signupUser } from "../api/auth"; // Assuming you have a signup API function
+import { signupUser } from "../api/auth";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [showNotification, setShowNotification] = useState(false); // New state for notification
-  const navigate = useNavigate(); // Using useNavigate to redirect programmatically
+  const [showNotification, setShowNotification] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      // Ensure the API call sends username, email, and password
       const response = await signupUser({ username, email, password });
-      setMessage("Sign up successful!"); // Update message
-      setShowNotification(true); // Show the notification
+      setMessage("Sign up successful!");
+      setShowNotification(true);
     } catch (error) {
       setMessage(error.message || "Sign up failed");
     }
   };
 
   const handleGoToLogin = () => {
-    navigate("/login"); // Navigate to the login page
+    navigate("/login");
   };
 
   return (
@@ -48,7 +47,6 @@ function Signup() {
         >
           {message && <p className="text-red-500 mb-4">{message}</p>}
 
-          {/* Username Field */}
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-500">
               Username
@@ -63,7 +61,6 @@ function Signup() {
             />
           </div>
 
-          {/* Email Field */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-500">
               Email
@@ -78,7 +75,6 @@ function Signup() {
             />
           </div>
 
-          {/* Password Field */}
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-500">
               Password
@@ -93,7 +89,6 @@ function Signup() {
             />
           </div>
 
-          {/* Sign Up Button */}
           <button
             type="submit"
             className="w-[50%] bg-sunrise text-white py-2 px-3 rounded-md hover:bg-orange-500 mx-auto text-lg font-bold mt-2"
@@ -112,7 +107,6 @@ function Signup() {
         </form>
       </div>
 
-      {/* Notification Popup */}
       {showNotification && (
         <div className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-white text-black p-4 rounded-md shadow-lg w-[90%] max-w-[416px]">
           <p>You're successfully registered!</p>
