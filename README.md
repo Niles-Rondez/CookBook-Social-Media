@@ -8,7 +8,8 @@
 
 The platform is designed to be accessible to users of all skill levels, fostering an open, collaborative environment for discovering new ideas, sharing cooking techniques, and celebrating favorite dishes.
 
-This Project is a collaboration between:
+## This Project is a collaboration between:
+
 CTRL-JUJU - Jude Mahilum Ando - Tasked with Integration between the front and back-end
 Niles-Rondez - Niles Vincent Gabrielle Rondez - Tasked with creating the back-end, database modelling, and creating/testing endpoints
 RYKELLE - Rykelle Wei Jayme Ruelan - Tasked with the front-end design and programming
