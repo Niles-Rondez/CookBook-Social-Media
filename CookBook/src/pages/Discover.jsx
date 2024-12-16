@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";  // Import Axios
 
 function Discover() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,60 +11,34 @@ function Discover() {
   ]);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "High Protein Pancakes",
-      author: "Jane Doe",
-      profilePic: "https://via.placeholder.com/100",
-      time: "3 hours ago",
-      imgUrl: "https://via.placeholder.com/300",
-      description:
-        "Indulge in these fluffy high-protein pancakes that are perfect for breakfast or as a post-workout treat. They're light, airy, and packed with the goodness of oats and whey protein. Serve them with a drizzle of honey, a handful of fresh berries, and a dollop of Greek yogurt for the perfect start to your day!",
-      calories: "350 kcal",
-      servings: 4,
-      cookTime: "20 mins",
-      rating: 4.5,
-      reviews: 12,
-      tags: ["Breakfast", "Healthy"],
-    },
-    {
-      id: 2,
-      title: "Keto Avocado Wrap",
-      author: "John Smith",
-      profilePic: "https://via.placeholder.com/100",
-      time: "5 hours ago",
-      imgUrl: "https://via.placeholder.com/300",
-      description:
-        "This keto avocado wrap is a delicious and healthy option for lunch. Packed with fresh veggies, creamy avocado, and a touch of lime, it’s both satisfying and low in carbs. Perfect for busy days when you need something quick yet nutritious!",
-      calories: "250 kcal",
-      servings: 2,
-      cookTime: "10 mins",
-      rating: 4.2,
-      reviews: 8,
-      tags: ["Keto", "Lunch"],
-    },
-    {
-      id: 3,
-      title: "Vegan Buddha Bowl",
-      author: "Emily Clark",
-      profilePic: "https://via.placeholder.com/100",
-      time: "6 hours ago",
-      imgUrl: "https://via.placeholder.com/300",
-      description:
-        "A vibrant vegan Buddha bowl filled with fresh, colorful veggies, protein-packed chickpeas, and wholesome grains. Tossed with a tangy tahini dressing, this bowl is a feast for the eyes and the palate. It’s perfect for a quick, nutritious dinner or meal prep!",
-      calories: "400 kcal",
-      servings: 3,
-      cookTime: "15 mins",
-      rating: 4.8,
-      reviews: 20,
-      tags: ["Vegan", "Dinner"],
-    },
-  ]);
+  // State to store fetched posts from backend
+  const [posts, setPosts] = useState([]);
 
   const allTags = ["Healthy", "Keto", "Vegan", "Breakfast", "Lunch", "Dinner"];
 
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();  // Initialize navigate function
+
+  // Fetch posts from backend when the component mounts
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get("/api/posts");
+        console.log(response.data);  // Log the response to check the structure
+        if (Array.isArray(response.data)) {
+          setPosts(response.data);  // Set posts only if it's an array
+        } else {
+          console.error("Expected an array of posts, but received:", response.data);
+          setPosts([]);  // Set an empty array as fallback
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setPosts([]);  // Set an empty array on error as fallback
+      }
+    };
+  
+    fetchPosts();  // Call the function to fetch posts
+  }, []);  // Empty dependency array ensures this runs once when the component mounts
+  
 
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
@@ -84,12 +59,12 @@ function Discover() {
   };
 
   const handleAddRecipe = () => {
-    navigate("/newrecipe"); // Navigate to the new recipe page
+    navigate("/newrecipe");  // Navigate to the new recipe page
   };
 
   const filteredPosts = posts.filter((post) => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTags = selectedTags.length === 0 || selectedTags.some((tag) => post.tags.includes(tag));
+    const matchesSearch = post.postHeader.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesTags = selectedTags.length === 0 || selectedTags.some((tag) => post.dietType && post.dietType.includes(tag));
     return matchesSearch && matchesTags;
   });
 
@@ -224,49 +199,30 @@ function Discover() {
         <div className="space-y-6 max-w-3xl mx-auto">
           {filteredPosts.map((post) => (
             <div
-              key={post.id}
+              key={post.postID}
               className="bg-white rounded-lg shadow-md flex flex-col p-6 space-y-4"
             >
               <div className="flex space-x-4">
                 <img
-                  src={post.imgUrl}
-                  alt={post.title}
+                  src={post.imgUrl || "https://via.placeholder.com/300"}  // Default placeholder if no image is provided
+                  alt={post.postHeader}
                   className="w-48 h-48 rounded-lg object-cover"
                 />
                 <div className="flex flex-col justify-between flex-grow">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800">{post.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-800">{post.postHeader}</h3>
                     <p className="text-gray-500 text-sm">
-                      By {post.author} • {post.time}
+                      By {post.user ? post.user.name : "Unknown Author"} • {new Date(post.dateCreated).toLocaleString()}
                     </p>
-                    <p className="text-gray-700 mt-4">{post.description}</p>
+                    <p className="text-gray-700 mt-2">{post.postDesc}</p>
+                  </div>
+                  <div className="mt-4 flex justify-between items-center">
+                    <button className="text-red-500 hover:text-red-700 text-sm">View Recipe</button>
+                    <div className="text-sm">
+                      {post.dietType.join(", ")}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4 mt-4">
-                <div>
-                  <p className="text-gray-500 text-sm">Servings</p>
-                  <p className="font-bold">{post.servings}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Cook Time</p>
-                  <p className="font-bold">{post.cookTime}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Calories</p>
-                  <p className="font-bold">{post.calories}</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-between mt-4">
-                <div className="flex items-center space-x-2">
-                  <p className="text-yellow-500 font-bold">{post.rating} ★</p>
-                  <p className="text-gray-500 text-sm">
-                    ({post.reviews} reviews)
-                  </p>
-                </div>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-full shadow hover:bg-red-600 transition">
-                  View Recipe
-                </button>
               </div>
             </div>
           ))}
