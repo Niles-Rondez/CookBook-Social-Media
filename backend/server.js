@@ -1,6 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const db = require("./db");
+const multer = require("multer");
+const path = require("path");
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +24,23 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/saved-posts", savedPostRoutes);
 app.use("/api/follow", followerRoutes); // Add follower route
+
+// Configure Multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Ensure this folder exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage });
+
+// Use Multer in your post route
+app.post("/api/posts", upload.single("image"), (req, res, next) => {
+  req.body.imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+  next();
+});
 
 // Database connection and server start
 const PORT = process.env.PORT || 5000;

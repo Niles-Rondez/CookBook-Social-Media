@@ -1,5 +1,5 @@
-// src/pages/NewRecipe.jsx
 import { useState } from "react";
+import axios from "axios"; // Make sure axios is installed
 
 function NewRecipe() {
   const [recipeName, setRecipeName] = useState("");
@@ -35,11 +35,29 @@ function NewRecipe() {
     setSteps(updatedSteps);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    alert("Recipe submitted!");
+  
+    const newRecipeData = {
+      userID: 1, // Use the actual logged-in user's ID here
+      postHeader: recipeName,
+      description: recipeDescription,
+      prepTime: "30 mins", // Example, you may want to add a field for this
+      dietType: "vegetarian", // Example, you may want to add a field for this
+      ingredients: ingredients,
+      steps: steps,
+      nutrition: nutrition,
+    };
+  
+    try {
+      const response = await axios.post("/api/posts", newRecipeData);
+      alert("Recipe submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting recipe:", error.response || error.message);
+      alert("Failed to submit recipe.");
+    }
   };
+  
 
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100 p-6">
@@ -49,12 +67,7 @@ function NewRecipe() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Recipe Name */}
           <div>
-            <label
-              htmlFor="recipeName"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Recipe Name
-            </label>
+            <label htmlFor="recipeName" className="block text-lg font-medium text-gray-700">Recipe Name</label>
             <input
               id="recipeName"
               type="text"
@@ -68,12 +81,7 @@ function NewRecipe() {
 
           {/* Recipe Description */}
           <div>
-            <label
-              htmlFor="recipeDescription"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Recipe Description
-            </label>
+            <label htmlFor="recipeDescription" className="block text-lg font-medium text-gray-700">Recipe Description</label>
             <textarea
               id="recipeDescription"
               value={recipeDescription}
@@ -152,33 +160,32 @@ function NewRecipe() {
             </button>
           </div>
 
-            {/* Recipe Photo */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Add Recipe Photos</h2>
-              <label 
-                htmlFor="recipe-photo" 
-                className="bg-red-600 text-white py-1 px-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 cursor-pointer"
-              >
-                Upload Photo
-              </label>
-              <input
-                id="recipe-photo"
-                type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-                className="hidden"
-                accept="image/*"
-              />
-              {image && (
-                <div className="mt-4">
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt="Recipe preview"
-                    className="w-32 h-32 object-cover mt-2 rounded-lg"
-                  />
-                </div>
-              )}
-            </div>
-
+          {/* Recipe Photo */}
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Add Recipe Photos</h2>
+            <label 
+              htmlFor="recipe-photo" 
+              className="bg-red-600 text-white py-1 px-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 cursor-pointer"
+            >
+              Upload Photo
+            </label>
+            <input
+              id="recipe-photo"
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="hidden"
+              accept="image/*"
+            />
+            {image && (
+              <div className="mt-4">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Recipe preview"
+                  className="w-32 h-32 object-cover mt-2 rounded-lg"
+                />
+              </div>
+            )}
+          </div>
 
           {/* Nutrition Facts */}
           <div>
