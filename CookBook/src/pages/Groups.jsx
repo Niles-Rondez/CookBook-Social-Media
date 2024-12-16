@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function GroupsPage() {
-  const totalGroups = 50; // Dynamically update this based on group count.
-
-  // Sample group data
-  const allGroups = Array.from({ length: totalGroups }).map((_, idx) => ({
-    id: idx + 1,
-    name: `Group Name ${idx + 1}`,
-    creator: `Creator ${idx + 1}`,
-    members: Math.floor(Math.random() * 500) + 1,
-  }));
-
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("My Groups");
-  const [filteredGroups, setFilteredGroups] = useState(allGroups);
+  const [filteredGroups, setFilteredGroups] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newGroup, setNewGroup] = useState({
     name: "",
@@ -21,12 +12,30 @@ function GroupsPage() {
     privacy: "public",
   });
 
+  // Fetch groups from the backend
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("/api/groups");
+        if (Array.isArray(response.data)) {
+          setFilteredGroups(response.data); // Set the groups if the data is an array
+        } else {
+          console.error("API did not return an array of groups.");
+        }
+      } catch (error) {
+        console.error("Error fetching groups:", error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
 
     // Filter groups based on search term
-    const filtered = allGroups.filter((group) =>
+    const filtered = filteredGroups.filter((group) =>
       group.name.toLowerCase().includes(value)
     );
     setFilteredGroups(filtered);
@@ -48,7 +57,7 @@ function GroupsPage() {
     }
 
     const groupToAdd = {
-      id: allGroups.length + 1,
+      id: filteredGroups.length + 1,
       name: newGroup.name,
       creator: newGroup.creator,
       members: Math.floor(Math.random() * 500) + 1,
@@ -64,10 +73,7 @@ function GroupsPage() {
     <div className="p-8 font-sans bg-gray-100 relative">
       {/* "50 Groups" Display */}
       <div className="flex justify-between items-center mb-4">
-        <span
-          className="text-lg"
-          style={{ fontFamily: "Times New Roman, serif" }}
-        >
+        <span className="text-lg" style={{ fontFamily: "Times New Roman, serif" }}>
           <span className="font-bold text-black">{filteredGroups.length}</span>{" "}
           <span className="text-red-600 font-semibold">Groups</span>
         </span>
@@ -97,10 +103,10 @@ function GroupsPage() {
       <div className="text-center bg-gray-100 p-6 rounded-lg shadow-md mb-6">
         <h2 className="text-2xl font-bold mb-2">Find Your Community on CookBook</h2>
         <p className="text-gray-600">
-          CookBook is your go-to community for food lovers of all levels, from beginner cooks to seasoned chefs. 
-          Discover groups that share your passion, whether it’s exploring global flavors or perfecting local dishes. 
-          Connect, learn, and grow alongside others who share your love for creativity in the kitchen. Together, we 
-          make cooking more enjoyable, inspiring, and unforgettable.
+          CookBook is your go-to community for food lovers of all levels, from beginner cooks to seasoned chefs.
+          Discover groups that share your passion, whether it’s exploring global flavors or perfecting local dishes.
+          Connect, learn, and grow alongside others who share your love for creativity in the kitchen.
+          Together, we make cooking more enjoyable, inspiring, and unforgettable.
         </p>
       </div>
 
@@ -132,26 +138,30 @@ function GroupsPage() {
 
       {/* Content */}
       <div className="grid grid-cols-3 gap-6">
-        {filteredGroups.map((group) => (
-          <div
-            key={group.id}
-            className="bg-red-100 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-lg cursor-pointer"
-          >
-            <img
-              src="https://via.placeholder.com/60"
-              alt="Group Avatar"
-              className="w-16 h-16 rounded-full mb-2"
-            />
-            <h3 className="text-sm font-semibold">{group.name}</h3>
-            <p className="text-xs text-gray-500">{group.creator}</p>
-            <div className="flex justify-between items-center mt-4 w-full">
-              <span className="text-xs text-gray-500">{group.members} Members</span>
-              <button className="text-red-600 text-xs font-semibold">
-                View Group
-              </button>
+        {Array.isArray(filteredGroups) && filteredGroups.length > 0 ? (
+          filteredGroups.map((group) => (
+            <div
+              key={group.groupID}
+              className="bg-red-100 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-lg cursor-pointer"
+            >
+              <img
+                src="https://via.placeholder.com/60"
+                alt="Group Avatar"
+                className="w-16 h-16 rounded-full mb-2"
+              />
+              <h3 className="text-sm font-semibold">{group.name}</h3>
+              <p className="text-xs text-gray-500">{group.creator}</p>
+              <div className="flex justify-between items-center mt-4 w-full">
+                <span className="text-xs text-gray-500">{group.members} Members</span>
+                <button className="text-red-600 text-xs font-semibold">
+                  View Group
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No groups found.</p>
+        )}
       </div>
 
       {/* New Group Modal */}
