@@ -1,59 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [recipes, setRecipes] = useState([]);
-  const [notifications, setNotifications] = useState([]);
-  const [openOptions, setOpenOptions] = useState(null); // Tracks which post has the options menu open
   const navigate = useNavigate();
+  const [recipes, setRecipes] = useState([
+    {
+      id: 1,
+      title: "Avocado Salad",
+      author: "Jane Doe",
+      profilePic: "https://via.placeholder.com/100",
+      time: "2 hours ago",
+      imgUrl: "https://via.placeholder.com/300",
+      description: "A healthy and delicious avocado salad.",
+      calories: "200 kcal",
+      protein: "5g",
+      carbs: "20g",
+      fat: "15g",
+      tags: ["Healthy", "Salad"],
+    },
+    {
+      id: 2,
+      title: "Chocolate Cake",
+      author: "John Smith",
+      profilePic: "https://via.placeholder.com/100",
+      time: "5 hours ago",
+      imgUrl: "https://via.placeholder.com/300",
+      description: "Rich and creamy chocolate cake.",
+      calories: "400 kcal",
+      protein: "6g",
+      carbs: "50g",
+      fat: "20g",
+      tags: ["Dessert"],
+    },
+  ]);
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await fetch("/src/data/recipes.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch recipes");
-        }
-        const data = await response.json();
-        setRecipes(data);
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-      }
-    };
-
-    const fetchNotifications = async () => {
-      try {
-        const response = await fetch("/src/data/notifications.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch notifications");
-        }
-        const data = await response.json();
-        setNotifications(data.notifications);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
-
-    fetchRecipes();
-    fetchNotifications();
-  }, []);
+  const [notifications, setNotifications] = useState([
+    { author: "Admin", message: "New recipe posted!", profilePic: "https://via.placeholder.com/100" },
+    { author: "Chef Alex", message: "Your recipe was liked!", profilePic: "https://via.placeholder.com/100" },
+  ]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [openOptions, setOpenOptions] = useState(null);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  const toggleNotifications = () => {
+    setShowNotifications((prev) => !prev);
+  };
+
+  const closeNotifications = () => {
+    setShowNotifications(false);
+  };
+
   const handleAddRecipe = () => {
-    navigate("/new-recipe");
-  };
-
-  const toggleOptions = (id) => {
-    setOpenOptions((prev) => (prev === id ? null : id)); // Open/close the options menu
-  };
-
-  const handleSavePost = (recipeId) => {
-    alert(`Recipe with ID: ${recipeId} has been saved.`);
-    setOpenOptions(null); // Close the menu after an action
+    navigate("/newrecipe");
   };
 
   const getTagColor = (tag) => {
@@ -61,11 +63,17 @@ function Home() {
       Healthy: "bg-green-100 text-green-800",
       Salad: "bg-blue-100 text-blue-800",
       Dessert: "bg-yellow-100 text-yellow-800",
-      Snack: "bg-purple-100 text-purple-800",
-      Keto: "bg-teal-100 text-teal-800",
       Default: "bg-gray-100 text-gray-800",
     };
     return colors[tag] || colors.Default;
+  };
+
+  const toggleOptions = (id) => {
+    setOpenOptions((prev) => (prev === id ? null : id));
+  };
+
+  const handleSavePost = (id) => {
+    alert(`Post ${id} saved!`);
   };
 
   const filteredRecipes = recipes.filter(
@@ -75,26 +83,96 @@ function Home() {
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-row">
+    <div className="bg-gray-100 min-h-screen flex">
+      {/* Notifications Panel */}
+      {showNotifications && (
+        <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-md overflow-y-auto z-50">
+          {/* Notifications Header */}
+          <div className="flex justify-between items-center p-4 border-b">
+            <h2 className="text-xl font-bold">Notifications</h2>
+            <button
+              onClick={closeNotifications}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Profile Section */}
+          <div className="flex items-center p-4 border-b">
+            <img
+              src="https://via.placeholder.com/100"
+              alt="Profile"
+              className="w-16 h-16 rounded-full object-cover mr-4"
+            />
+            <div>
+              <h2 className="text-lg font-bold">John Doe</h2>
+              <p className="text-gray-500">Followers: 100 | Following: 150</p>
+            </div>
+          </div>
+
+          {/* Notifications List */}
+          <div className="p-4">
+            {notifications.length > 0 ? (
+              notifications.map((notif, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-100 rounded-lg p-4 mb-2 shadow"
+                >
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src={notif.profilePic}
+                      alt={`${notif.author}'s profile`}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <p className="font-medium text-gray-800">{notif.message}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No new notifications</p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        {/* Search and New Recipe */}
-        <div className="flex justify-between items-center bg-white p-4 rounded-full shadow-md w-full max-w-4xl mb-6 space-x-4">
-          <div className="flex items-center bg-gray-100 p-3 rounded-full w-full max-w-lg">
+      <div
+        className={`flex-1 p-6 transition-all duration-300 ${
+          showNotifications ? "mr-80" : ""
+        }`}
+      >
+        {/* Notifications Toggle Button */}
+        <div className="absolute top-4 right-4">
+          <button
+            onClick={toggleNotifications}
+            className="relative flex items-center bg-white p-3 rounded-full shadow-md hover:shadow-lg transition"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-5 h-5 text-gray-400"
+              className="w-6 h-6 text-gray-600"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M15.75 15.75L19.5 19.5m-7.125-7.125A6.375 6.375 0 1118 6.375 6.375 6.375 0 0112.375 12.375z"
+                d="M15 17h5l-1.405-1.405a2.032 2.032 0 01-.595-1.41V11a7 7 0 10-14 0v3.185a2.032 2.032 0 01-.595 1.41L4 17h5m6 0v1a2 2 0 11-4 0v-1m6 0H9"
               />
             </svg>
+            {notifications.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                {notifications.length}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Search and New Recipe */}
+        <div className="flex justify-between items-center bg-white p-4 rounded-full shadow-md w-full max-w-4xl mb-6 mx-auto space-x-4">
+          <div className="flex items-center bg-gray-100 p-3 rounded-full flex-grow">
             <input
               type="text"
               placeholder="Search CookBook"
@@ -136,15 +214,10 @@ function Home() {
                       >
                         Save Post
                       </button>
-                      <button
-                        onClick={() => alert("Feature not yet implemented")}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                      >
-                        Another Option
-                      </button>
                     </div>
                   )}
                 </div>
+
                 <div className="flex items-center space-x-3">
                   <img
                     src={recipe.profilePic}
@@ -156,20 +229,31 @@ function Home() {
                     <p className="text-sm text-gray-400">{recipe.time}</p>
                   </div>
                 </div>
+
+                {/* Adjusted Image Section */}
+                <img
+                  src={recipe.imgUrl}
+                  alt={recipe.title}
+                  className="w-full h-[350px] object-cover rounded-lg"
+                />
+
                 <div>
                   <h2 className="text-2xl font-semibold text-gray-800">
                     {recipe.title}
                   </h2>
-                  <p className="text-sm text-gray-500">
-                    {recipe.calories} | {recipe.protein} | {recipe.carbs} |{" "}
-                    {recipe.fat}
-                  </p>
+                  <p className="text-gray-600">{recipe.description}</p>
+                </div>
+                <div className="flex justify-between text-sm text-gray-400">
+                  <span>{recipe.calories}</span>
+                  <span>{recipe.protein}</span>
+                  <span>{recipe.carbs}</span>
+                  <span>{recipe.fat}</span>
                 </div>
                 <div className="flex space-x-2">
                   {recipe.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getTagColor(
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${getTagColor(
                         tag
                       )}`}
                     >
@@ -177,43 +261,12 @@ function Home() {
                     </span>
                   ))}
                 </div>
-                <p className="text-gray-600 text-sm">{recipe.description}</p>
-                <img
-                  src={recipe.imgUrl}
-                  alt={recipe.title}
-                  className="w-full h-80 object-cover rounded-md"
-                />
               </div>
             ))
           ) : (
-            <p className="text-gray-500">No recipes found.</p>
+            <p className="text-gray-400 text-center">No recipes found</p>
           )}
         </div>
-      </div>
-
-      {/* Notifications Panel */}
-      <div className="w-80 bg-white shadow-md p-4">
-        <h2 className="text-lg font-bold mb-4">Notifications</h2>
-        <ul className="space-y-4">
-          {notifications.map((note, index) => (
-            <li
-              key={index}
-              className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100"
-            >
-              <img
-                src={note.profilePic}
-                alt={`${note.author}'s profile`}
-                className="h-10 w-10 rounded-full object-cover"
-              />
-              <div>
-                <p className="text-gray-800">
-                  <b>{note.author}</b> {note.message}
-                </p>
-                <p className="text-xs text-gray-400">Just now</p>
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
