@@ -72,10 +72,7 @@ function Login() {
 
           {/* Forgot password link outside form, aligned right */}
           <div className="flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-gray-500 hover:text-michelin"
-            >
+            <Link to="#" className="text-sm text-gray-500 hover:text-michelin">
               Forgot password?
             </Link>
           </div>
