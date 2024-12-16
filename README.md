@@ -45,9 +45,9 @@ In the root folder of the project, create a `.env` file (if it doesn't already e
 PORT=5000
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=admin123
+DB_PASSWORD=yourPassword
 DB_NAME=cookbook
-JWT_SECRET=rykellebayot
+JWT_SECRET=yourJWTSECRETPassword
 ```
 
 - **DB_PASSWORD**: If your MySQL setup has a different password for the `root` user, update it here.
