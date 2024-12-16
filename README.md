@@ -72,7 +72,7 @@ This will start the backend server on `localhost:5000` and connect to your local
 In a new terminal window, navigate to the frontend folder, install the necessary dependencies, and run the frontend:
 
 ```bash
-cd frontend
+cd CookBook
 npm install
 npm run dev
 ```
