@@ -1,46 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
-  const [recipes, setRecipes] = useState([
-    {
-      id: 1,
-      title: "Avocado Salad",
-      author: "Jane Doe",
-      profilePic: "https://via.placeholder.com/100",
-      time: "2 hours ago",
-      imgUrl: "https://via.placeholder.com/300",
-      description: "A healthy and delicious avocado salad.",
-      calories: "200 kcal",
-      protein: "5g",
-      carbs: "20g",
-      fat: "15g",
-      tags: ["Healthy", "Salad"],
-    },
-    {
-      id: 2,
-      title: "Chocolate Cake",
-      author: "John Smith",
-      profilePic: "https://via.placeholder.com/100",
-      time: "5 hours ago",
-      imgUrl: "https://via.placeholder.com/300",
-      description: "Rich and creamy chocolate cake.",
-      calories: "400 kcal",
-      protein: "6g",
-      carbs: "50g",
-      fat: "20g",
-      tags: ["Dessert"],
-    },
-  ]);
-
+  const [recipes, setRecipes] = useState([]); // Initialize as empty array
   const [notifications, setNotifications] = useState([
     { author: "Admin", message: "New recipe posted!", profilePic: "https://via.placeholder.com/100" },
     { author: "Chef Alex", message: "Your recipe was liked!", profilePic: "https://via.placeholder.com/100" },
   ]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [openOptions, setOpenOptions] = useState(null);
+  const navigate = useNavigate();
+
+  // Fetch posts when the component mounts
+  useEffect(() => {
+    axios
+      .get("/api/posts")
+      .then((response) => {
+        console.log(response.data);  // Check what data you're getting from the API
+        if (Array.isArray(response.data)) {
+          setRecipes(response.data); // Set it only if it's an array
+        } else {
+          console.error("Expected an array, but got:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }, []);
+  
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -238,24 +227,19 @@ function Home() {
                 />
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-gray-800">
-                    {recipe.title}
-                  </h2>
+                  <h2 className="text-2xl font-semibold text-gray-800">{recipe.title}</h2>
                   <p className="text-gray-600">{recipe.description}</p>
+                  <p className="text-gray-500">Calories: {recipe.calories}</p>
+                  <p className="text-gray-500">Protein: {recipe.protein}</p>
+                  <p className="text-gray-500">Carbs: {recipe.carbs}</p>
+                  <p className="text-gray-500">Fat: {recipe.fat}</p>
                 </div>
-                <div className="flex justify-between text-sm text-gray-400">
-                  <span>{recipe.calories}</span>
-                  <span>{recipe.protein}</span>
-                  <span>{recipe.carbs}</span>
-                  <span>{recipe.fat}</span>
-                </div>
-                <div className="flex space-x-2">
+
+                <div className="flex space-x-4">
                   {recipe.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${getTagColor(
-                        tag
-                      )}`}
+                      className={`px-4 py-1 rounded-full text-sm ${getTagColor(tag)}`}
                     >
                       {tag}
                     </span>
@@ -264,7 +248,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p className="text-gray-400 text-center">No recipes found</p>
+            <p className="text-center text-gray-500">No posts found.</p>
           )}
         </div>
       </div>

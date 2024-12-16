@@ -3,7 +3,7 @@ const sequelize = require("../db"); // Make sure your db.js file is exporting a 
 
 // Import models
 const User = require("./User")(sequelize, Sequelize.DataTypes);
-const Followers = require("./Follower")(sequelize, Sequelize.DataTypes);
+const Followers = require("./Followers")(sequelize, Sequelize.DataTypes);
 const Post = require("./Post")(sequelize, Sequelize.DataTypes);
 const Comment = require("./Comment")(sequelize, Sequelize.DataTypes);
 const Group = require("./Group")(sequelize, Sequelize.DataTypes);
