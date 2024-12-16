@@ -39,7 +39,6 @@ function Discover() {
     fetchPosts();  // Call the function to fetch posts
   }, []);  // Empty dependency array ensures this runs once when the component mounts
   
-
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -197,35 +196,39 @@ function Discover() {
         </div>
         {/* Posts */}
         <div className="space-y-6 max-w-3xl mx-auto">
-          {filteredPosts.map((post) => (
-            <div
-              key={post.postID}
-              className="bg-white rounded-lg shadow-md flex flex-col p-6 space-y-4"
-            >
-              <div className="flex space-x-4">
-                <img
-                  src={post.imgUrl || "https://via.placeholder.com/300"}  // Default placeholder if no image is provided
-                  alt={post.postHeader}
-                  className="w-48 h-48 rounded-lg object-cover"
-                />
-                <div className="flex flex-col justify-between flex-grow">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-800">{post.postHeader}</h3>
-                    <p className="text-gray-500 text-sm">
-                      By {post.user ? post.user.name : "Unknown Author"} • {new Date(post.dateCreated).toLocaleString()}
-                    </p>
-                    <p className="text-gray-700 mt-2">{post.postDesc}</p>
-                  </div>
-                  <div className="mt-4 flex justify-between items-center">
-                    <button className="text-red-500 hover:text-red-700 text-sm">View Recipe</button>
-                    <div className="text-sm">
-                      {post.dietType.join(", ")}
+          {filteredPosts.length === 0 ? (
+            <p className="text-center text-lg text-gray-500">No recipes to discover.</p>
+          ) : (
+            filteredPosts.map((post) => (
+              <div
+                key={post.postID}
+                className="bg-white rounded-lg shadow-md flex flex-col p-6 space-y-4"
+              >
+                <div className="flex space-x-4">
+                  <img
+                    src={post.imgUrl || "https://via.placeholder.com/300"}  // Default placeholder if no image is provided
+                    alt={post.postHeader}
+                    className="w-48 h-48 rounded-lg object-cover"
+                  />
+                  <div className="flex flex-col justify-between flex-grow">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-800">{post.postHeader}</h3>
+                      <p className="text-gray-500 text-sm">
+                        By {post.user ? post.user.name : "Unknown Author"} • {new Date(post.dateCreated).toLocaleString()}
+                      </p>
+                      <p className="text-gray-700 mt-2">{post.postDesc}</p>
+                    </div>
+                    <div className="mt-4 flex justify-between items-center">
+                      <button className="text-red-500 hover:text-red-700 text-sm">View Recipe</button>
+                      <div className="text-sm">
+                        {post.dietType.join(", ")}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
